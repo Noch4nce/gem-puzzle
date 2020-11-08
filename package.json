@@ -1,0 +1,44 @@
+{
+  "name": "gem-puzzle",
+  "version": "1.0.0",
+  "description": "",
+  "private": true,
+  "scripts": {
+    "dev": "cross-env NODE-ENV=development webpack --mode development",
+    "start": "cross-env NODE-ENV=development webpack-dev-server --mode development --open",
+    "build": "cross-env NODE-ENV=production webpack --mode production",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Noch4nce/gem-puzzle.git"
+  },
+  "author": "Nochance",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Noch4nce/gem-puzzle/issues"
+  },
+  "homepage": "https://github.com/Noch4nce/gem-puzzle#readme",
+  "devDependencies": {
+    "clean-webpack-plugin": "^3.0.0",
+    "cross-env": "^7.0.2",
+    "css-loader": "^5.0.1",
+    "eslint": "^7.12.1",
+    "eslint-config-airbnb-base": "^14.2.0",
+    "eslint-plugin-import": "^2.22.1",
+    "file-loader": "^6.2.0",
+    "html-webpack-plugin": "^4.5.0",
+    "mini-css-extract-plugin": "^1.2.1",
+    "node-sass": "^5.0.0",
+    "optimize-css-assets-webpack-plugin": "^5.0.3",
+    "sass-loader": "^10.0.5",
+    "style-loader": "^2.0.0",
+    "terser-webpack-plugin": "^4.1.0",
+    "webpack": "^4.44.1",
+    "webpack-cli": "^3.3.12",
+    "webpack-dev-server": "^3.11.0"
+  },
+  "dependencies": {
+    "normalize.css": "^8.0.1"
+  }
+}
