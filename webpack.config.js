@@ -78,6 +78,7 @@ module.exports = {
             filename: '[name].[contenthash].css',
         }),
     ],
+    devtool: 'eval-source-map',
     module: {
         rules: [
             //Loading CSS
@@ -99,6 +100,17 @@ module.exports = {
             {
                 test: /\.(ttf|otf|eot|woff|woff2)$/,
                 use: ['file-loader']
+            },
+            // Loader babel
+            {
+                test: /\.m?js$/,
+                exclude: /(node_modules|bower_components)/,
+                use: {
+                    loader: 'babel-loader',
+                    options: {
+                    presets: ['@babel/preset-env']
+                    },
+                }
             }
         ],
     }
