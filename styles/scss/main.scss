@@ -1,4 +1,36 @@
 body {
+    box-sizing: border-box;
+    margin: 0 auto;
+    padding: 0;
     background-color:tan;
     font-family: 'Roboto', sans-serif;
+    font-size: 2rem;
+    font-weight: normal;
+    font-style: normal;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.gameboard {
+    margin-top: 8rem;
+    text-align: center;
+}
+
+.horizontal {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.column {
+    padding-top: 3rem;
+    min-width: 100px;
+    min-height: 80px;
+    justify-content: center;
+    text-align: center;
+    order: 1;
+    border: 3px solid lightslategrey;
+    background-color: paleturquoise;
+    color: royalblue;
 }

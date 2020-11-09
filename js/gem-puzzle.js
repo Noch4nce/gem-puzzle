@@ -22,5 +22,12 @@ export default class GemPuzzle {
             }
             this.arrGemPuzzle.push(horizontal);
         }
+
+        this.emptyGem = [this.height - 1, this.width - 1];
+        const [column, horizontal] = this.emptyGem;
+        this.arrGemPuzzle[column][horizontal] = {
+            number: '*',
+            isClick: false,
+        };
     }
 }
