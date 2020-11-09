@@ -1,8 +1,10 @@
 export default class GemPuzzle {
-    constructor(width, height) {
+    constructor(width, height, UiGemPuzzle) {
         this.width = width;
         this.height = height;
         this.gameFormat();
+        this.UiGamePuzzle = UiGemPuzzle;
+        if (UiGemPuzzle) UiGemPuzzle.draw(this);
     }
 
     gameFormat = () => {
@@ -20,7 +22,5 @@ export default class GemPuzzle {
             }
             this.arrGemPuzzle.push(horizontal);
         }
-
-        console.log(this.arrGemPuzzle);
     }
 }
