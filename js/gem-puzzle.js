@@ -34,6 +34,7 @@ export default class GemPuzzle {
 
     setEventClick = () => {
         this.setAllClickBlocks();
+        const getClickableBlocks = this.getClick();
     }
 
     setAllClickBlocks = () => {
@@ -42,5 +43,16 @@ export default class GemPuzzle {
                 objBlock.isClick = false;
             }
         }
+    }
+
+    getClick = () => {
+        const [horizontal, column] = this.emptyGem;
+
+        return [
+            [horizontal - 1, column],
+            [horizontal + 1, column],
+            [horizontal, column - 1],
+            [horizontal, column + 1],
+        ];
     }
 }
