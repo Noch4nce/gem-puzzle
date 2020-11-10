@@ -29,5 +29,18 @@ export default class GemPuzzle {
             number: '*',
             isClick: false,
         };
+        this.setEventClick();
+    }
+
+    setEventClick = () => {
+        this.setAllClickBlocks();
+    }
+
+    setAllClickBlocks = () => {
+        for (const arrBlock of this.arrGemPuzzle) {
+            for (const objBlock of arrBlock) {
+                objBlock.isClick = false;
+            }
+        }
     }
 }
