@@ -35,6 +35,7 @@ export default class GemPuzzle {
     setEventClick = () => {
         this.setAllClickBlocks();
         const getClickableBlocks = this.getClick();
+        const getFilterBlocks = this.filterBlocks(getClickableBlocks);
     }
 
     setAllClickBlocks = () => {
@@ -54,5 +55,19 @@ export default class GemPuzzle {
             [horizontal, column - 1],
             [horizontal, column + 1],
         ];
+    }
+
+    filterBlocks = (getClickableBlocks) => {
+        const clickableBlocks = [];
+
+        for (const arrBlocks of getClickableBlocks) {
+            const [firstColumn, secondColumn] = arrBlocks;
+            if (firstColumn >= 0 && firstColumn < this.height
+                && secondColumn >= 0 && secondColumn < this.width) {
+                clickableBlocks.push(arrBlocks);
+            }
+        }
+
+        return clickableBlocks;
     }
 }
