@@ -36,6 +36,7 @@ export default class GemPuzzle {
         this.setAllClickBlocks();
         const getClickableBlocks = this.getClick();
         const getFilterBlocks = this.filterBlocks(getClickableBlocks);
+        this.setIsClickable(getFilterBlocks);
     }
 
     setAllClickBlocks = () => {
@@ -69,5 +70,13 @@ export default class GemPuzzle {
         }
 
         return clickableBlocks;
+    }
+
+    setIsClickable = (getFilterBlocks) => {
+        for (const arrBlock of getFilterBlocks) {
+            const [firstColumn, secondColumn] = arrBlock;
+            const block = this.arrGemPuzzle[firstColumn][secondColumn];
+            block.isClick = true;
+        }
     }
 }
