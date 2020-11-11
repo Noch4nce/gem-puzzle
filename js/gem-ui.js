@@ -29,7 +29,11 @@ export default class GemUi {
         for (const horizontal of GemPuzzle.arrGemPuzzle) {
             const horizontalEl = this.generateGemEl('div', ['horizontal'], null, gameBoard);
             for (const column of horizontal) {
-                this.generateGemEl('div', ['column'], column.number, horizontalEl);
+                if (column.isClick) {
+                    this.generateGemEl('div', ['column', 'clickable'], column.number, horizontalEl);
+                } else {
+                    this.generateGemEl('div', ['column'], column.number, horizontalEl);
+                }
             }
         }
     }
