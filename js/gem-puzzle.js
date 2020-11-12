@@ -79,4 +79,19 @@ export default class GemPuzzle {
             block.isClick = true;
         }
     }
+
+    handleClick = (block) => {
+        const clickableCoordinate = this.getClickableCoor(block);
+    }
+
+    getClickableCoor = (block) => {
+        for (let horizontal = 0; horizontal < this.height; horizontal += 1) {
+            for (let column = 0; column < this.width; column += 1) {
+                const currentBlock = this.arrGemPuzzle[horizontal][column];
+                if (currentBlock === block) return [horizontal][column];
+            }
+        }
+
+        return true;
+    }
 }
