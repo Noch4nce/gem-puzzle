@@ -3,7 +3,7 @@ export default class GemPuzzle {
         this.width = width;
         this.height = height;
         this.gameFormat();
-        this.UiGamePuzzle = UiGemPuzzle;
+        this.UiGemPuzzle = UiGemPuzzle;
         if (UiGemPuzzle) UiGemPuzzle.draw(this);
     }
 
@@ -82,16 +82,31 @@ export default class GemPuzzle {
 
     handleClick = (block) => {
         const clickableCoordinate = this.getClickableCoor(block);
+        this.swapBlocks(this.emptyGem, clickableCoordinate);
+        this.emptyGem = clickableCoordinate;
+        this.setEventClick();
+        this.UiGemPuzzle.draw(this);
     }
 
     getClickableCoor = (block) => {
         for (let horizontal = 0; horizontal < this.height; horizontal += 1) {
             for (let column = 0; column < this.width; column += 1) {
                 const currentBlock = this.arrGemPuzzle[horizontal][column];
-                if (currentBlock === block) return [horizontal][column];
+                if (currentBlock === block) return [horizontal, column];
             }
         }
 
         return true;
+    }
+
+    swapBlocks = (emptyGemCoor, clickableCoordinate) => {
+        const [coorEmpty1, coorEmpty2] = emptyGemCoor;
+        const [coorBlock1, coorBlock2] = clickableCoordinate;
+
+        const blockEmpty = this.arrGemPuzzle[coorEmpty1][coorEmpty2];
+        const blockClickable = this.arrGemPuzzle[coorBlock1][coorBlock2];
+
+        this.arrGemPuzzle[coorEmpty1][coorEmpty2] = blockClickable;
+        this.arrGemPuzzle[coorBlock1][coorBlock2] = blockEmpty;
     }
 }
