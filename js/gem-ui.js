@@ -22,6 +22,7 @@ export default class GemUi {
     draw = (GemPuzzle) => {
         this.clear();
         this.drawBoard(GemPuzzle);
+        this.gameInfo(GemPuzzle);
     }
 
     drawBoard = (GemPuzzle) => {
@@ -39,6 +40,10 @@ export default class GemUi {
                 }
             }
         }
+    }
+
+    gameInfo = (GemPuzzle) => {
+        this.generateGemEl('div', ['turn'], `${GemPuzzle.turns}`, this.mainEl);
     }
 
     clear = () => {

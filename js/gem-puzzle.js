@@ -9,6 +9,7 @@ export default class GemPuzzle {
 
     gameFormat = () => {
         this.arrGemPuzzle = [];
+        this.turns = 0;
         let number = 1;
 
         for (let i = 0; i < this.height; i += 1) {
@@ -81,6 +82,7 @@ export default class GemPuzzle {
     }
 
     handleClick = (block) => {
+        this.turns += 1;
         const clickableCoordinate = this.getClickableCoor(block);
         this.swapBlocks(this.emptyGem, clickableCoordinate);
         this.emptyGem = clickableCoordinate;
