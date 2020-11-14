@@ -10,6 +10,7 @@ export default class GemPuzzle {
     gameFormat = () => {
         this.arrGemPuzzle = [];
         this.turns = 0;
+        this.gameStart = new Date();
         let number = 1;
 
         for (let i = 0; i < this.height; i += 1) {

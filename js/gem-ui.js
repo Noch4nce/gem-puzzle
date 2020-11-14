@@ -44,9 +44,24 @@ export default class GemUi {
 
     gameInfo = (GemPuzzle) => {
         this.generateGemEl('div', ['turn'], `${GemPuzzle.turns}`, this.mainEl);
+        this.gameStart = GemPuzzle.gameStart;
+        this.timerEl = this.generateGemEl('div', ['timer'], this.formatTime(), this.mainEl);
+        setInterval(this.updTime);
+    }
+
+    updTime = () => {
+        this.timerEl.innerHTML = this.formatTime();
+    }
+
+    formatTime = () => {
+        const currnetTime = new Date();
+        const delta = currnetTime - this.gameStart;
+
+        return delta / 1000;
     }
 
     clear = () => {
         this.mainEl.innerHTML = '';
+        if (this.timer) clearInterval(this.timer);
     }
 }
