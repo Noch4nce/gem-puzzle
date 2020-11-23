@@ -1,10 +1,7 @@
 import '../styles/css/style.css';
 import '../styles/scss/main.scss';
-// import images from '../assets/image/bg.png';
-import GemUi from './gem-ui';
-import GemPuzzle from './gem-puzzle';
+// import images from "../assets/image/bg.png";
+import GameContainer from './gameContainer';
 
-const UiGemPuzzle = new GemUi('mainEl');
-const GameGemPuzzle = new GemPuzzle(2, 2, UiGemPuzzle);
-
-console.log(GameGemPuzzle.width);
+const gameContainer = new GameContainer();
+console.log(gameContainer);
