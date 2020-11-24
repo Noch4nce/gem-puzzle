@@ -1,40 +1,230 @@
+$bg-color: hsl(256,33,10);
+$dot-color: hsl(256,33,70);
+$bgg-color: rgb(83, 65, 112);
+$dot-size: 1px;
+$dot-space: 22px;
+
+@mixin for-size ($size) {
+    @if $size == phone {
+        @media (min-width: 320px) and (max-width: 767px) {
+            @content;
+        }
+    }
+
+    @else if $size == tablet {
+        @media (min-width: 768px) and (max-width: 953px) {
+            @content;
+        }
+    }
+
+    @else if $size == represent {
+        @media screen and (max-width: 953px) {
+            @content;
+        }
+    }
+}
+
 body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
     box-sizing: border-box;
     margin: 0 auto;
-    padding: 0;
-    background-color:tan;
+    background:
+		linear-gradient(90deg, $bg-color ($dot-space - $dot-size), transparent 1%) center,
+		linear-gradient($bg-color ($dot-space - $dot-size), transparent 1%) center,
+		$dot-color;
+	background-size: $dot-space $dot-space;
     font-family: 'Roboto', sans-serif;
-    font-size: 2rem;
-    font-weight: normal;
     font-style: normal;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    font-weight: normal;
+    font-size: 1.5rem;
+    color: #bc5a45;
+
+    div {
+        // display: flex;
+        justify-content: center;
+        align-items: center;
+    }
 }
 
 .gameboard {
-    margin-top: 8rem;
-    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    font-size: 2rem;
 }
 
-.horizontal {
+.row {
     display: flex;
+    background:
+		linear-gradient(90deg, $bgg-color ($dot-space - $dot-size), transparent 1%) center,
+		linear-gradient($bgg-color ($dot-space - $dot-size), transparent 1%) center,
+		$dot-color;
+    background-size: $dot-space $dot-space;
+
+}
+
+.cell {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2.5rem;
+    order: 1;
+    margin: 0.4rem;
+    min-width: 6rem;
+    min-height: 6rem;
+    border: 4px solid  #f0efef;
+    border-radius: 20%;
+    background-color: #f0efef;
+    transition: all 1s ease-in;
+
+    @include for-size(tablet) {
+        font-size: 1.5rem;
+        min-width: 4rem;
+        min-height: 4rem;
+    }
+
+    @include for-size(phone) {
+        font-size: 1rem;
+        min-width: 1.2rem;
+        min-height: 1rem;
+    }
+}
+
+.empty {
+    opacity: 0;
+}
+
+.turns, .time, .start, .mute, .wrapper_field {
+    display: flex;
+    text-align: center;
     align-items: center;
     justify-content: center;
+    margin-top: 0.4rem;
+    max-width: 12rem;
+    min-height: 2.5rem;
+    border: 2px solid rgb(112, 151, 73);
+    color: rgb(240, 230, 138);
+    background-color: rgb(63, 125, 128);
+
+    @include for-size(phone) {
+        font-size: 1rem;
+        max-width: 6.2rem;
+        min-height: 1rem;
+    }
 }
 
-.block {
-    padding-top: 3rem;
-    min-width: 100px;
-    min-height: 80px;
-    justify-content: center;
+.turns:hover, .time:hover, .start:hover, .mute:hover {
+    cursor: pointer;
+    background-color: rgb(95, 168, 172);
+}
+
+.start:hover {
+    cursor: pointer;
+    background-color: rgb(50, 72, 98);
+
+    @include for-size(phone) {
+        font-size: 0.9rem;
+        max-width: 4.2rem;
+        min-height: 1rem;
+    }
+}
+
+.finish {
+    position: absolute;
+    display: flex;
     text-align: center;
-    order: 1;
-    border: 3px solid lightslategrey;
-    background-color: paleturquoise;
-    color: royalblue;
+    align-items: center;
+    justify-content: center;
+    top: 80px;
+    left: 686px;
+    border: 2px solid rgb(112, 151, 73);
+    max-width: 32rem;
+    min-height: 7.5rem;
+    color: rgb(238, 42, 24);
+    background-color: rgb(34, 102, 105);
+
+    @include for-size(phone) {
+        top: 50px;
+        left: 120px;
+        font-size: 1rem;
+        max-width: 5.2rem;
+        min-height: 1rem;
+    }
 }
 
-.clickable {
-    background-color: cyan;
+.operation {
+    padding: 0rem 0.5rem;
+    font-size: 2.5rem;
+    cursor: pointer;
+
+    @include for-size(phone) {
+        padding: 0rem 0.2rem;
+        font-size: 0.9rem;
+        max-width: 4.2rem;
+        min-height: 1rem;
+    }
+}
+
+.operation:hover {
+    cursor: pointer;
+    background-color: rgb(50, 72, 98);
+
+    @include for-size(phone) {
+        font-size: 0.9rem;
+        max-width: 4.2rem;
+        min-height: 1rem;
+    }
+}
+
+.width {
+    font-size: 2rem;
+
+    @include for-size(phone) {
+        font-size: 0.9rem;
+        max-width: 4.2rem;
+        min-height: 1rem;
+    }
+}
+
+.height {
+    font-size: 2rem;
+
+    @include for-size(phone) {
+        font-size: 0.9rem;
+        max-width: 4.2rem;
+        min-height: 1rem;
+    }
+}
+
+.ladder {
+    font-size: 2rem;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    margin-top: 0.4rem;
+    max-width: 18rem;
+    min-height: 2.5rem;
+    border: 2px solid rgb(112, 151, 73);
+    color: rgb(236, 187, 128);
+    background-color: rgb(63, 125, 128);
+
+    @include for-size(phone) {
+        font-size: 1rem;
+        max-width: 9.2rem;
+        min-height: 1rem;
+    }
+}
+
+.score {
+    font-size: 1.4rem;
+
+    @include for-size(phone) {
+        font-size: 0.9rem;
+        min-height: 1rem;
+    }
 }

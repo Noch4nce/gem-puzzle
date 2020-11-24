@@ -1,112 +1,173 @@
-export default class GemPuzzle {
-    constructor(width, height, UiGemPuzzle) {
+/* eslint-disable no-continue */
+export default class Game {
+    constructor(width, height, ui, gameContainer) {
         this.width = width;
         this.height = height;
-        this.gameFormat();
-        this.UiGemPuzzle = UiGemPuzzle;
-        if (UiGemPuzzle) UiGemPuzzle.draw(this);
+        this.ui = ui;
+        this.gameContainer = gameContainer;
+        this.generateGame();
+        if (ui) ui.draw(this);
     }
 
-    gameFormat = () => {
-        this.arrGemPuzzle = [];
+    generateGame = () => {
+        this.gameState = [];
+        this.turns = 0;
+        this.gameStart = new Date();
         let number = 1;
-
         for (let i = 0; i < this.height; i += 1) {
-            const horizontal = [];
+            const row = [];
             for (let j = 0; j < this.width; j += 1) {
-                horizontal.push({
+                row.push({
                     number,
-                    isClick: false,
+                    canClick: false,
                 });
                 number += 1;
             }
-            this.arrGemPuzzle.push(horizontal);
+            this.gameState.push(row);
+        }
+        this.empty = [this.height - 1, this.width - 1];
+        const [row, column] = this.empty;
+        this.gameState[row][column] = {
+            number: '*',
+            canClick: false,
+        };
+
+        this.random();
+        this.findEmptyCell();
+        this.setEventClick();
+    };
+
+    random = () => {
+        const getShuffled = this.setRandom();
+        this.setShuffled(getShuffled);
+    }
+
+    setRandom = () => {
+        const arr = this.gameState.flat();
+        const shuffled = arr.sort(() => Math.random() - 0.5);
+
+        return shuffled;
+    }
+
+    setShuffled = (shuffled) => {
+        let count = 0;
+        for (let horizontal = 0; horizontal < this.height; horizontal += 1) {
+            for (let column = 0; column < this.width; column += 1) {
+                this.gameState[horizontal][column] = shuffled[count];
+                count += 1;
+            }
+        }
+    };
+
+    findEmptyCell = () => {
+        const emptyCoor = [];
+
+        for (let i = 0; i < this.height; i += 1) {
+            for (let k = 0; k < this.width; k += 1) {
+                if (this.gameState[i][k].number === '*') {
+                    emptyCoor.push(i, k);
+                }
+            }
         }
 
-        this.emptyGem = [this.height - 1, this.width - 1];
-        const [column, horizontal] = this.emptyGem;
-        this.arrGemPuzzle[column][horizontal] = {
-            number: '*',
-            isClick: false,
-        };
-        this.setEventClick();
+        this.empty = emptyCoor;
     }
 
     setEventClick = () => {
-        this.setAllClickBlocks();
-        const getClickableBlocks = this.getClick();
-        const getFilterBlocks = this.filterBlocks(getClickableBlocks);
-        this.setIsClickable(getFilterBlocks);
-    }
+        this.setAllUnClickable();
+        const clickCoordinates = this.getClick();
+        const filterCoordinates = this.filterClick(clickCoordinates);
+        this.setClickable(filterCoordinates);
+    };
 
-    setAllClickBlocks = () => {
-        for (const arrBlock of this.arrGemPuzzle) {
-            for (const objBlock of arrBlock) {
-                objBlock.isClick = false;
+    setAllUnClickable = () => {
+        for (const row of this.gameState) {
+            for (const cell of row) {
+                cell.canClick = false;
             }
         }
-    }
+    };
 
     getClick = () => {
-        const [horizontal, column] = this.emptyGem;
+        const [row, column] = this.empty;
 
         return [
-            [horizontal - 1, column],
-            [horizontal + 1, column],
-            [horizontal, column - 1],
-            [horizontal, column + 1],
+            [row - 1, column],
+            [row + 1, column],
+            [row, column - 1],
+            [row, column + 1],
         ];
-    }
+    };
 
-    filterBlocks = (getClickableBlocks) => {
-        const clickableBlocks = [];
+    filterClick = (clickCoordinates) => {
+        const out = [];
 
-        for (const arrBlocks of getClickableBlocks) {
-            const [firstColumn, secondColumn] = arrBlocks;
-            if (firstColumn >= 0 && firstColumn < this.height
-                && secondColumn >= 0 && secondColumn < this.width) {
-                clickableBlocks.push(arrBlocks);
+        for (const coordinate of clickCoordinates) {
+            const [row, column] = coordinate;
+            if (row >= 0 && row < this.height && column >= 0 && column < this.width) {
+                out.push(coordinate);
             }
         }
 
-        return clickableBlocks;
-    }
+        return out;
+    };
 
-    setIsClickable = (getFilterBlocks) => {
-        for (const arrBlock of getFilterBlocks) {
-            const [firstColumn, secondColumn] = arrBlock;
-            const block = this.arrGemPuzzle[firstColumn][secondColumn];
-            block.isClick = true;
+    setClickable = (filterCoordinates) => {
+        for (const coordinate of filterCoordinates) {
+            const [row, column] = coordinate;
+            const cell = this.gameState[row][column];
+            cell.canClick = true;
         }
-    }
+    };
 
-    handleClick = (block) => {
-        const clickableCoordinate = this.getClickableCoor(block);
-        this.swapBlocks(this.emptyGem, clickableCoordinate);
-        this.emptyGem = clickableCoordinate;
+    handleClick = (cell) => {
+        this.turns += 1;
+        const coor2 = this.getCellCoord(cell);
+        this.swapCells(this.empty, coor2);
+        this.empty = coor2;
         this.setEventClick();
-        this.UiGemPuzzle.draw(this);
+        this.checkIsFinished();
+        this.ui.draw(this);
     }
 
-    getClickableCoor = (block) => {
-        for (let horizontal = 0; horizontal < this.height; horizontal += 1) {
+    getCellCoord = (cell) => {
+        for (let row = 0; row < this.height; row += 1) {
             for (let column = 0; column < this.width; column += 1) {
-                const currentBlock = this.arrGemPuzzle[horizontal][column];
-                if (currentBlock === block) return [horizontal, column];
+                const currentCell = this.gameState[row][column];
+                if (currentCell === cell) return [row, column];
             }
         }
-
         return true;
+    };
+
+    swapCells = (coor1, coor2) => {
+        const [row, column] = coor1;
+        const [row2, column2] = coor2;
+        const cell1 = this.gameState[row][column];
+        const cell2 = this.gameState[row2][column2];
+
+        this.gameState[row][column] = cell2;
+        this.gameState[row2][column2] = cell1;
     }
 
-    swapBlocks = (emptyGemCoor, clickableCoordinate) => {
-        const [coorEmpty1, coorEmpty2] = emptyGemCoor;
-        const [coorBlock1, coorBlock2] = clickableCoordinate;
+    checkIsFinished = () => {
+        if (this.checkCellsArranged() && !this.solved) {
+            this.solved = true;
+            this.solvedTime = new Date() - this.gameStart;
+            this.gameContainer.ladder.addNewResult(this.turns, this.solvedTime);
+        }
+    }
 
-        const blockEmpty = this.arrGemPuzzle[coorEmpty1][coorEmpty2];
-        const blockClickable = this.arrGemPuzzle[coorBlock1][coorBlock2];
-
-        this.arrGemPuzzle[coorEmpty1][coorEmpty2] = blockClickable;
-        this.arrGemPuzzle[coorBlock1][coorBlock2] = blockEmpty;
+    checkCellsArranged = () => {
+        let count = 0;
+        for (const cell of this.gameState.flat()) {
+            count += 1;
+            if (cell.number === '*') {
+                continue;
+            } else if (cell.number !== count) {
+                return false;
+            }
+        }
+        return true;
     }
 }
